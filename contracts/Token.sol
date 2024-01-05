@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
@@ -10,8 +10,19 @@ contract Token {
     uint256 public totalSupply;
 
     mapping(address => uint256) public balanceOf;
+    mapping(address => mapping(address => uint256)) public allowance;
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Transfer(
+        address indexed from,
+        address indexed to,
+        uint256 value
+    );
+
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
 
     constructor(
         string memory _name,
@@ -20,14 +31,14 @@ contract Token {
     ) {
         name = _name;
         symbol = _symbol;
-        totalSupply = _totalSupply * (10 ** decimals);
+        totalSupply = _totalSupply * (10**decimals);
         balanceOf[msg.sender] = totalSupply;
     }
 
-    function transfer(
-        address _to,
-        uint256 _value
-    ) public returns (bool success) {
+    function transfer(address _to, uint256 _value)
+        public
+        returns (bool success)
+    {
         require(balanceOf[msg.sender] >= _value);
         require(_to != address(0));
 
@@ -38,4 +49,17 @@ contract Token {
 
         return true;
     }
+
+    function approve(address _spender, uint256 _value)
+        public
+        returns(bool success)
+    {
+        require(_spender != address(0));
+
+        allowance[msg.sender][_spender] = _value;
+
+        emit Approval(msg.sender, _spender, _value);
+        return true;
+    }
+
 }
