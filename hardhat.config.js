@@ -1,10 +1,17 @@
-require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config();
+import { HardhatUserConfig } from "hardhat/config";
+import "@nomicfoundation/hardhat-toolbox";
+require('dotenv').config()
 
-/** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
-  solidity: "0.8.23",
-  networks:{
-    localhost:{}
-  },
+const config: HardhatUserConfig = {
+  solidity: "0.8.20",
+  networks: {
+    "lancerplaid": {
+      url: "https://lancerplaid-rpc.eu-north-2.gateway.fm",
+      chainId: 1548612888,
+      gasPrice: 0
+    }
+  }
 };
+
+export default config;
+    
